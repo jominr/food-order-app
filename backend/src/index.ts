@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose"
+import myUserRoute from "./routes/MyUserRoute";
 
 // typescript : as string
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -10,8 +11,11 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
 const app = express();
 
 // add the middleware: convert the req.body to json
-app.use(express.json); 
+app.use(express.json()); 
 app.use(cors());
+
+app.use("/api/my/user", myUserRoute);
+
 app.get("/test", async (req: Request, res: Response)=> {
   res.json({ message: "hello" });
 })
