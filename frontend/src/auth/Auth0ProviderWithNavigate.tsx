@@ -1,7 +1,7 @@
-import { Auth0Provider } from "@auth0/auth0-react";
+import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 
 type Props = {
-  children: React.ReactDOM
+  children: React.ReactNode
 };
 
 const Auth0ProviderWithNavigate = ({ children } : Props) => {
