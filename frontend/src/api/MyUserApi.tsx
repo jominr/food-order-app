@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -8,14 +9,18 @@ type CreateUserRequest = {
 }
 
 export const useCreateMyUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
   // 定义一个mutation函数，用于发起数据变更请求，
   // useMutation返回一个mutation对象，其中包含处理异步数据变更的函数mutate, 这里叫mutateAsync, 改名字为createUser, 以及isLoading, isError等状态。
   // 当用户提交表单时，通过mutation.createUser(formData)触发mutation函数。
 
   const createMyUserRequest = async (user: CreateUserRequest) => {
+    const accessToken = await getAccessTokenSilently();
     const response = await fetch(`${API_BASE_URL}/api/my/user`, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
