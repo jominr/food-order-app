@@ -3,8 +3,9 @@ import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose"
 import myUserRoute from "./routes/MyUserRoute";
-import { v2 as cloudinary } from "cloudinary";
 // cloudinary package exports a V2 variable which is the version 2 of their API, 
+import { v2 as cloudinary } from "cloudinary";
+import myRestaurantRoute from "./routes/MyRestaurantRoute";
 
 // typescript : as string
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -26,6 +27,7 @@ app.get("/health", async (req: Request, res: Response)=> {
 })
 
 app.use("/api/my/user", myUserRoute);
+app.use("/api/my/restaurant", myRestaurantRoute);
 
 app.listen(7001, ()=>{
   console.log("server started on localhost: 7001")
