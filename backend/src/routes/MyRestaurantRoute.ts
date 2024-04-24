@@ -17,16 +17,29 @@ const upload = multer({
 // /api/my/restaurant
 router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant)
 // /ap/my/restaurant
-/* 我把upload.single("imageFile")放在validateMyRestaurantRequest的前面，
+/* 
+  2024.04.24
+  我把upload.single("imageFile")放在validateMyRestaurantRequest的前面，
     validateMyRestaurantRequest就会报错，这是为什么呀?
+  2024.04.25
+  更新：反过来又报错了，eeee
  */
 router.post(
   "/", 
-  validateMyRestaurantRequest,
   upload.single("imageFile"),
+  validateMyRestaurantRequest,
   jwtCheck,
   jwtParse,
   MyRestaurantController.createMyRestaurant
 );
+
+router.put(
+  "/", 
+  upload.single("imageFile"),
+  validateMyRestaurantRequest,
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateMyRestaurant
+)
 
 export default router;

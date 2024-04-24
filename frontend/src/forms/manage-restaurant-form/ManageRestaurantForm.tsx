@@ -38,8 +38,12 @@ const formSchema = z.object({
     name: z.string().min(1, "name is required"),
     price: z.coerce.number().min(1, "price is required")
   })),
-  imageFile: z.instanceof(File, {message: "image is required"}),
-});
+  imageUrl: z.string().optional(),
+  imageFile: z.instanceof(File, {message: "image is required"}).optional(),
+  }).refine((data) => data.imageUrl || data.imageFile, {
+    message: "Either image URL or image File must be provided",
+    path: ["imageFile"],
+  });
 
 // create a type based on this form schema
 // use for useForm
@@ -77,7 +81,7 @@ const ManageRestaurantForm = ({ isLoading, onSave, restaurant } : Props) => {
     form.reset(updatedRestaurant);
 
   }, [form, restaurant]);
-  
+
   const onSubmit = (formDataJson: RestaurantFormData) => {
     // convert formDataJson to a new FormData object,
     const formData = new FormData();
@@ -104,8 +108,10 @@ const ManageRestaurantForm = ({ isLoading, onSave, restaurant } : Props) => {
       formData.append(`menuItems[${index}][name]`, menuItem.name);
       formData.append(`menuItems[${index}][price]`, (menuItem.price * 100).toString());
     });
-
-    formData.append(`imageFile`, formDataJson.imageFile);
+ 
+    if (formDataJson.imageFile) {
+      formData.append(`imageFile`, formDataJson.imageFile);
+    }
     onSave(formData);
   };
 
