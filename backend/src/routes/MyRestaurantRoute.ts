@@ -14,6 +14,8 @@ const upload = multer({
   }
 })
 
+// /api/my/restaurant
+router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant)
 // /ap/my/restaurant
 /* 我把upload.single("imageFile")放在validateMyRestaurantRequest的前面，
     validateMyRestaurantRequest就会报错，这是为什么呀?

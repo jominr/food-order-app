@@ -1,10 +1,12 @@
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useFormContext } from "react-hook-form";
 
 
 const ImageSection = () => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const exisitingImageUrl = watch("imageUrl");
   
   return (
     <div className="space-y-2">
@@ -15,7 +17,13 @@ const ImageSection = () => {
         </FormDescription>
       </div>
 
-      <div className="flex flex-col gap-8 w-[50%]">
+      <div className="flex flex-col gap-8 md:w-[50%]">
+        {exisitingImageUrl && (
+          <AspectRatio ratio={16/9}>
+            {/* object-cover, 原始比例进行裁剪缩放，防止图片挤压变形 */}
+            <img src={exisitingImageUrl} className="rounded-md object-cover h-full w-full"/>
+          </AspectRatio>
+        )}
         <FormField
           control={control}
           name="imageFile"
