@@ -4,6 +4,17 @@ import RestaurantController from "../controllers/RestaurantController";
 
 const router = express.Router();
 
+// /api/restuarant/:restaurantId
+router.get(
+  "/:restaurantId", 
+  param("restaurantId")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("RestaurantId paramenter must be a valid string"),
+  RestaurantController.getRestaurant
+); 
+
 // /api/restuarant/search/lodon
 router.get(
   "/search/:city", 
@@ -11,7 +22,7 @@ router.get(
     .isString()
     .trim()
     .notEmpty()
-    .withMessage("City parament must be a valid string"),
+    .withMessage("City paramenter must be a valid string"),
   RestaurantController.searchRestaurants
 ); 
 

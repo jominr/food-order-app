@@ -11,6 +11,7 @@ export type User = {
 // 这里也没有定义auth0Id, 因为这是token来的，属于前端传给后端的东西，不是后端返回给前端的东西。？
 
 export type MenuItem = {
+  _id: string;
   name: string,
   price: number,
 }
