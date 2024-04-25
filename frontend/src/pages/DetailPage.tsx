@@ -5,6 +5,7 @@ import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { MenuItem as MenuItemType } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -21,7 +22,10 @@ const DetailPage = () => {
   // restaurantId来自params, 所以可能为undefined
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
 
-  const [cartItems, setCartItems ] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems ] = useState<CartItem[]>(()=>{
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   /*
   [
@@ -58,25 +62,28 @@ const DetailPage = () => {
           }
         ]
       }
+      sessionStorage.setItem(`cartItems-${restaurantId}`, JSON.stringify(updatedCartItems))
       return updatedCartItems;
     })
   };
 
   const removeFromCart = (cartItem: CartItem) => {
     setCartItems((prevCartItems)=> {
-      const updateCartItems = prevCartItems.filter(item => cartItem._id !== item._id);
-      return updateCartItems;
+      const updatedCartItems = prevCartItems.filter(item => cartItem._id !== item._id);
+      sessionStorage.setItem(`cartItems-${restaurantId}`, JSON.stringify(updatedCartItems))
+      return updatedCartItems;
     })
   }
 
   const addQuantity = (cartItem: CartItem) => {
     setCartItems((prevCartItems)=> {
-      const updateCartItems = prevCartItems.map(item => 
+      const updatedCartItems = prevCartItems.map(item => 
         cartItem._id === item._id 
           ? {...item, quantity: item.quantity + 1 }
           : {...item}
       );
-      return updateCartItems;
+      sessionStorage.setItem(`cartItems-${restaurantId}`, JSON.stringify(updatedCartItems))
+      return updatedCartItems;
     })
   }
 
@@ -92,8 +99,13 @@ const DetailPage = () => {
           : {...item}
         )
       }
+      sessionStorage.setItem(`cartItems-${restaurantId}`, JSON.stringify(updatedCartItems))
       return updatedCartItems;
     })
+  }
+
+  const onCheckout = (userFormData: UserFormData) => {
+    console.log("userFormData", userFormData)
   }
 
   if (isLoading || !restaurant) {
@@ -129,12 +141,11 @@ const DetailPage = () => {
               removeFromCart={removeFromCart}
             />
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton disabled={cartItems.length === 0} onCheckout={onCheckout}/>
             </CardFooter>
           </Card>
         </div>
-
-
+        
       </div>
 
     </div>

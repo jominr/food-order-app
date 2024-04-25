@@ -19,16 +19,18 @@ const formSchema = z.object({
 });
 
 // use z framework to infer or automatically determine the type based on the formSchema;
-type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
   currentUser: User,
   onSave: (userProfileData : UserFormData) => void;
   isLoading: boolean;
+  title?:string;
+  buttonText?:string;
 }
 
 // 参数括号里，control + space，提示有哪些类型
-const UserProfileForm = ({ currentUser, isLoading, onSave}: Props) => {
+const UserProfileForm = ({ currentUser, isLoading, onSave, title="User Profile", buttonText="submit" }: Props) => {
   // shad cn中的form 也是基于 react hook form
   // using react hook form library to initilize a form 
   const form = useForm<UserFormData>({ 
@@ -48,7 +50,7 @@ const UserProfileForm = ({ currentUser, isLoading, onSave}: Props) => {
       >
         {/* handleSubmit: handle validation and call function onSave  */}
         <div>
-          <h2 className="text-2xl font-bold">User Profile Form</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and change your profile information here
           </FormDescription>
@@ -119,7 +121,7 @@ const UserProfileForm = ({ currentUser, isLoading, onSave}: Props) => {
             )}/>
         </div>
         
-        {isLoading ? <LoadingButton /> : <Button type="submit" className="bg-orange-500">Submit</Button>}
+        {isLoading ? <LoadingButton /> : <Button type="submit" className="bg-orange-500">{buttonText}</Button>}
       
       </form>
     </Form>
