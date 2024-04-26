@@ -20,9 +20,14 @@ cloudinary.config({
 })
 const app = express();
 
+app.use(cors());
+
+// stripe can verify that string in the request is valid 
+// express.raw()用来解析request.body传参的
+app.use("/api/order/checkout/webhook", express.raw({type: "*/*"}));
+
 // add the middleware: convert the req.body to json
 app.use(express.json()); 
-app.use(cors());
 
 app.get("/health", async (req: Request, res: Response)=> {
   res.json({ message: "health OK!" });
