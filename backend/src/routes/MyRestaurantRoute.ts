@@ -14,6 +14,12 @@ const upload = multer({
   }
 })
 
+// /api/my/restaurant/order
+router.get("/order", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurantOrders)
+
+// 只改一部分
+router.patch("/order/:orderId/status", jwtCheck, jwtParse, MyRestaurantController.updateOderStatus)
+
 // /api/my/restaurant
 router.get("/", jwtCheck, jwtParse, MyRestaurantController.getMyRestaurant)
 // /ap/my/restaurant
