@@ -1,4 +1,4 @@
-import { MinusCircle, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { MenuItem as MenuItemType } from "../types"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
