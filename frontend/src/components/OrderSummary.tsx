@@ -33,7 +33,7 @@ const OrderSummary = ({restaurant, cartItems, addQuantity, minusQuantity, remove
 
       <CardContent className="flex flex-col gap-5">
         {cartItems.map((item)=>(
-          <div className="flex justify-between">
+          <div key={item._id} className="flex justify-between">
             <span className="flex items-center gap-1">
               <PlusCircle className="cursor-pointer" color="green" size={20} onClick={() => addQuantity(item)}/>
               <Badge variant="outline">
